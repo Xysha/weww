@@ -1,0 +1,143 @@
+#include <string>
+#include <iostream>
+using namespace std;
+
+struct STR {
+	int index;
+	int value;
+	string name;
+	STR* next;
+};
+
+struct box {
+	int lenght = 0;
+	STR head;
+};
+
+void append(box* mass) {
+	long long int value;
+	string name;
+	cout << "Enter name: ";
+	cin >> name;
+	cout << "Enter telephone numbers: ";
+	cin >> value;
+	if (mass->lenght == 0) {
+		mass->head.index = 0;
+		mass->head.value = value;
+		mass->head.name = name;
+		mass->head.next = nullptr;
+	}
+	else {
+		STR* tmp = &(mass->head);
+		while (tmp->next != nullptr) {
+			tmp = tmp->next;
+		}
+		tmp->next = new STR;
+		STR* newstr = tmp->next;
+		newstr->index = tmp->index + 1;
+		newstr->value = value;
+		newstr->name = name;
+		newstr->next = nullptr;
+	}
+	(*mass).lenght++;
+}
+
+void show(box mass) {
+	for (STR* tmp = &(mass).head;tmp != nullptr;tmp = tmp->next) {
+		cout << "Index : " << tmp->index +1 << "  _____ " << " Name : " << tmp->name << "  _____ " << " Value :" << tmp->value << endl;
+	}
+	cout << endl;
+}
+
+void ascending(box* mass) {
+	for (STR* tmp = &(mass->head); tmp->next != nullptr; tmp = tmp->next) {
+		for (STR* newstr = &(mass->head); newstr->next != nullptr; newstr = newstr->next) {
+			if (newstr->value > newstr->next->value) {
+				int m = newstr->value;
+				newstr->value = newstr->next->value;
+				newstr->next->value = m;
+			}
+		}
+	}
+}
+
+void descending(box* mass) {
+	for (STR* tmp = &(mass->head); tmp->next != nullptr; tmp = tmp->next) {
+		for (STR* newstr = &(mass->head); newstr->next != nullptr; newstr = newstr->next) {
+			if (newstr->value < newstr->next->value) {
+				int m = newstr->value;
+				newstr->value = newstr->next->value;
+				newstr->next->value = m;
+			}
+		}
+	}
+}
+
+void alphabet(box* mass) {
+	for (STR* tmp = &(mass->head); tmp->next != nullptr; tmp = tmp->next) {
+		for (STR* newstr = &(mass->head); newstr->next != nullptr; newstr = newstr->next) {
+			if (newstr->name > newstr->next->name) {
+				string Name = newstr->name;
+				newstr->name = newstr->next->name;
+				newstr->next->name = Name;
+			}
+		}
+	}
+}
+
+void reversealph(box* mass) {
+	for (STR* tmp = &(mass->head); tmp->next != nullptr; tmp = tmp->next) {
+		for (STR* newstr = &(mass->head); newstr->next != nullptr; newstr = newstr->next) {
+			if (newstr->name < newstr->next->name) {
+				string Name = newstr->name;
+				newstr->name = newstr->next->name;
+				newstr->next->name = Name;
+			}
+		}
+	}
+}
+
+void sort(box* mass) {
+	int Sort;
+	string answer = "No";
+	do {
+		cout << "Choose sorting: " << endl;
+		cout << "Enter 1 to sort in ascending order" << endl; // по возрастанию
+		cout << "Enter 2 to sort in descending order" << endl; // по убыванию
+		cout << "Enter 3 to sort in alphabet order" << endl; // в алфавитном порядке
+		cout << "Enter 4 to sort in reverse alphabet order" << endl; // в обратном алфавитном порядке
+		cout << "Enter: ";
+		cin >> Sort;
+		switch (Sort) {
+		case 1:
+			ascending(mass);
+			break;
+		case 2:
+			descending(mass);
+			break;
+		case 3:
+			alphabet(mass);
+			break;
+		case 4:
+			reversealph(mass);
+			break;
+		}
+		show(*mass);
+		cout << "Do you want to use another sorting?" << endl;
+		cout << "Enter Yes or No: ";
+		cin >> answer;
+	} while (answer == "Yes");
+}
+
+int main()
+{
+	box head{};
+	int num;
+	cout << "Enter number of telephone numbers: ";
+	cin >> num;
+	for (int i = 0; i < num; i++) {
+		append(&head);
+	}
+	sort(&head);
+	return 0;
+}
