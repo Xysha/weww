@@ -3,10 +3,10 @@
 using namespace std;
 
 struct STR {
-	int index;
-	int value;
-	string name;
-	STR* next;
+	int index = 0;
+	long long int value = 0;
+	string name = "";
+	STR* next = nullptr;
 };
 
 struct box {
@@ -14,13 +14,83 @@ struct box {
 	STR head;
 };
 
+long long int correct_enter_lli() {
+	long long int number;
+	int flag1;
+	int flag2 = 0;
+	do {
+		if (flag2 == 1)
+		{
+			cout << "Enter correct number" << endl;
+		}
+		flag1 = 0;
+		cin >> number;
+		if (!cin.good() || cin.peek() != '\n') //  Проверка на отсутствие ошибок ввод-вывода
+		{
+			flag1 = 1;
+			cin.clear();    //  Очищает флаги состояния, связанные с потоком
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			continue;
+		}
+		flag2 = 1;
+	} while ((flag1 == 1) || number <= 0);
+	return number;
+}
+
+int correct_enter_int() {
+	int num;
+	int flag1;
+	int flag2 = 0;
+	do {
+		if (flag2 == 1)
+		{
+			cout << "Enter correct number" << endl;
+		}
+		flag1 = 0;
+		cin >> num;
+		if (!cin.good() || cin.peek() != '\n') 
+		{
+			flag1 = 1;
+			cin.clear();   
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			continue;
+		}
+		flag2 = 1;
+	} while ((flag1 == 1) || num <= 0);
+	return num;
+}
+
+string correct_enter_str() {
+	string name;
+	int flag1;
+	int flag2 = 0;
+	do {
+		if (flag2 == 1)
+		{
+			cout << "Enter correct name" << endl;
+		}
+		flag1 = 0;
+		cin >> name;
+		if (!cin.good() || cin.peek() != '\n') //  Проверка на отсутствие ошибок ввод-вывода
+		{
+			flag1 = 1;
+			cin.clear();    //  Очищает флаги состояния, связанные с потоком
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			continue;
+		}
+		flag2 = 1;
+	} while ((flag1 == 1) || EOF == 0);
+	return name;
+}
+
 void append(box* mass) {
 	long long int value;
 	string name;
 	cout << "Enter name: ";
-	cin >> name;
+	name = correct_enter_str();
 	cout << "Enter telephone numbers: ";
-	cin >> value;
+	value = correct_enter_lli();
+	cout << endl;
 	if (mass->lenght == 0) {
 		mass->head.index = 0;
 		mass->head.value = value;
@@ -56,6 +126,9 @@ void ascending(box* mass) {
 				int m = newstr->value;
 				newstr->value = newstr->next->value;
 				newstr->next->value = m;
+				string Name = newstr->name;
+				newstr->name = newstr->next->name;
+				newstr->next->name = Name;
 			}
 		}
 	}
@@ -68,6 +141,9 @@ void descending(box* mass) {
 				int m = newstr->value;
 				newstr->value = newstr->next->value;
 				newstr->next->value = m;
+				string Name = newstr->name;
+				newstr->name = newstr->next->name;
+				newstr->next->name = Name;
 			}
 		}
 	}
@@ -80,6 +156,9 @@ void alphabet(box* mass) {
 				string Name = newstr->name;
 				newstr->name = newstr->next->name;
 				newstr->next->name = Name;
+				int m = newstr->value;
+				newstr->value = newstr->next->value;
+				newstr->next->value = m;
 			}
 		}
 	}
@@ -92,6 +171,9 @@ void reversealph(box* mass) {
 				string Name = newstr->name;
 				newstr->name = newstr->next->name;
 				newstr->next->name = Name;
+				int m = newstr->value;
+				newstr->value = newstr->next->value;
+				newstr->next->value = m;
 			}
 		}
 	}
@@ -108,6 +190,7 @@ void sort(box* mass) {
 		cout << "Enter 4 to sort in reverse alphabet order" << endl; // в обратном алфавитном порядке
 		cout << "Enter: ";
 		cin >> Sort;
+		cout << endl;
 		switch (Sort) {
 		case 1:
 			ascending(mass);
@@ -126,7 +209,8 @@ void sort(box* mass) {
 		cout << "Do you want to use another sorting?" << endl;
 		cout << "Enter Yes or No: ";
 		cin >> answer;
-	} while (answer == "Yes");
+		cout << endl;
+	} while (answer == "yes");
 }
 
 int main()
@@ -134,7 +218,8 @@ int main()
 	box head{};
 	int num;
 	cout << "Enter number of telephone numbers: ";
-	cin >> num;
+	num = correct_enter_int();
+	cout << endl;
 	for (int i = 0; i < num; i++) {
 		append(&head);
 	}
